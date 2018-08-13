@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
 import {NavBar,WhiteSpace,InputItem,WingBlank,List,Radio,Button} from 'antd-mobile';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom'
 
 import Logo from '../../components/logo/Logo'
+import {loginAsync} from '../../redux/actions'
 const Item = List.Item;
 class Login extends Component{
   //初始化状态
@@ -15,7 +18,7 @@ class Login extends Component{
   };
   //请求登录
   login = ()=>{
-    console.log(this.state);
+    this.props.loginAsync(this.state)
   };
   //设置状态
   handleChange =(name,val)=>{
@@ -24,9 +27,17 @@ class Login extends Component{
     })
   };
   render(){
+    const {type} = this.state;
+
+    const {msg, redirectTo} = this.props.user;
+    // 判断是否需要自动跳转
+    if(redirectTo) {
+      console.log(1111)
+      return <Redirect to={redirectTo}/>  // 在render()中实现自动跳转指定路由
+    }
     return (
       <div>
-        <NavBar>注册</NavBar>
+        <NavBar>登录</NavBar>
         <Logo/>
         <WingBlank>
           <List>
@@ -43,4 +54,9 @@ class Login extends Component{
     )
   }
 }
-export default Login;
+
+export default connect(
+  state => ({user: state.user}),  // 向UI组件Login中传入哪些一般属性
+  {loginAsync} // 向UI组件Login中传入哪些函数属性
+  // 传给UI组件不是异步action函数本身, 而是包含分发异步action的一个新的函数
+)(Login);
