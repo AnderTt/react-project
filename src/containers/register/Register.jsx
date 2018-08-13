@@ -1,7 +1,11 @@
 import React,{Component} from 'react';
 import {NavBar,WhiteSpace,InputItem,WingBlank,List,Radio,Button} from 'antd-mobile';
 
-import Logo from '../../components/logo/Logo'
+import Logo from '../../components/logo/Logo';
+
+//引入接口调用函数
+import {reqRegister} from '../../api'
+
 const Item = List.Item;
 
 class Register extends Component{
@@ -19,6 +23,11 @@ class Register extends Component{
   //请求注册
   register = ()=>{
     console.log(this.state);
+    reqRegister(this.state)
+      .then(res =>{
+          console.log(res.data)
+      })
+      .catch(error=>console.log(error))
   };
   //设置状态
   handleChange =(name,val)=>{
@@ -46,7 +55,7 @@ class Register extends Component{
               <Radio checked={type==='dashen'} onChange={(val)=>this.handleChange('type','dashen')}>老板</Radio>
             </Item>
             <WhiteSpace/>
-            <Button type='primary'>注册</Button>
+            <Button type='primary' onClick={this.register}>注册</Button>
             <WhiteSpace/>
             <Button onClick={this.toLogin}>已有账号</Button>
           </List>
