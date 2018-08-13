@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {NavBar,WhiteSpace,InputItem,WingBlank,List,Radio,Button} from 'antd-mobile';
-import {connect} from 'react-redux';
+import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 
 import Logo from '../../components/logo/Logo';
-import {registAsync} from '../../redux/actions'
+import {register} from '../../redux/actions'
 
 //引入接口调用函数
 import {reqRegister} from '../../api'
@@ -25,7 +25,7 @@ class Register extends Component{
   //请求注册
   register = ()=>{
     console.log(this.state);
-    this.props.registAsync(this.state)
+    this.props.register(this.state)
   };
   //设置状态
   handleChange =(name,val)=>{
@@ -70,6 +70,6 @@ class Register extends Component{
 }
 export default connect(
   state=>({user:state.user}),
-  {registAsync}
+  {register}
 )(Register)
 

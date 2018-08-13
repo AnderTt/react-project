@@ -12,7 +12,7 @@ const authSuccess = (user)=>({ type : AUTH_SUCESS , data : user});
 const errorMsg = (msg)=>({ type : ERROR_MSG , data : msg});
 
 //注册的异步
-export function registAsync({username,password,type}) {//执行异步，发送ajax请求，得到结果，分发同步action
+export function register({username,password,type}) {//执行异步，发送ajax请求，得到结果，分发同步action
   return dispatch =>{
     reqRegister({username,password,type})
       .then(response=>{
@@ -30,7 +30,7 @@ export function registAsync({username,password,type}) {//执行异步，发送aj
   }
 }
 //登录的异步
-export function loginAsync({username,password}) {//执行异步，发送ajax请求，得到结果，分发同步action
+export function login({username,password}) {//执行异步，发送ajax请求，得到结果，分发同步action
   return dispatch =>{
     reqLogin(username,password)
       .then(response=>{

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
 
 import Logo from '../../components/logo/Logo'
-import {loginAsync} from '../../redux/actions'
+import {login} from '../../redux/actions'
 const Item = List.Item;
 class Login extends Component{
   //初始化状态
@@ -18,7 +18,7 @@ class Login extends Component{
   };
   //请求登录
   login = ()=>{
-    this.props.loginAsync(this.state)
+    this.props.login(this.state)
   };
   //设置状态
   handleChange =(name,val)=>{
@@ -57,6 +57,6 @@ class Login extends Component{
 
 export default connect(
   state => ({user: state.user}),  // 向UI组件Login中传入哪些一般属性
-  {loginAsync} // 向UI组件Login中传入哪些函数属性
+  {login} // 向UI组件Login中传入哪些函数属性
   // 传给UI组件不是异步action函数本身, 而是包含分发异步action的一个新的函数
 )(Login);
