@@ -87,7 +87,6 @@ export function updateUser(user) {
   return async dispatch=>{
     const response = await ajax('/update',user,'POST');
     const result = response.data;
-    console.log(result,'000');
     if(result.code===0){
       const user = result.data;
       console.log(user,'001');
