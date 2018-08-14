@@ -13,8 +13,8 @@ const errorMsg = (msg)=>({ type : ERROR_MSG , data : msg});
 
 //注册的异步
 export function register({username,password,type}) {//执行异步，发送ajax请求，得到结果，分发同步action
-  return dispatch =>{
-    reqRegister({username,password,type})
+  return async  dispatch =>{
+    /*reqRegister({username,password,type})
       .then(res=>{
         const result = res.data;// {code: 0, data: user} | {code: 1, msg: 'xxx'}
         if(result.code===0){//注册成功
@@ -27,13 +27,25 @@ export function register({username,password,type}) {//执行异步，发送ajax�
           // 分发同步action(失败)
           dispatch(errorMsg(msg));
         }
-      })
+      })*/
+    const response = await reqRegister({username,password,type});
+    const result = response.data;
+    if(result.code===0){//注册成功
+      const user = result.data;
+      console.log(user);
+      // 分发同步action(成功)
+      dispatch(authSuccess(user));
+    }else{//注册失败
+      const msg = result.msg;
+      // 分发同步action(失败)
+      dispatch(errorMsg(msg));
+    }
   }
 }
 //登录的异步
 export function login({username,password}) {//执行异步，发送ajax请求，得到结果，分发同步action
-  return dispatch =>{
-    reqLogin(username,password)
+  return async dispatch =>{
+    /*reqLogin(username,password)
       .then(response=>{
         const result = response.data;// {code: 0, data: user} | {code: 1, msg: 'xxx'}
         if(result.code===0){//登录成功
@@ -45,7 +57,19 @@ export function login({username,password}) {//执行异步，发送ajax请求，
           // 分发同步action(失败)
           dispatch(errorMsg(msg));
         }
-      })
+      })*/
+    const response = await reqLogin(username,password);
+    const result = response.data;
+    if(result.code===0){//登录成功
+      const user = result.data;
+      // 分发同步action(成功)
+      dispatch(authSuccess(user));
+    }else{//登录失败
+      const msg = result.msg;
+      // 分发同步action(失败)
+      dispatch(errorMsg(msg));
+    }
+
   }
 }
 

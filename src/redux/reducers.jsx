@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux';
 import {AUTH_SUCCESS,ERROR_MSG} from './action-types'
-console.log(1111)
 let initState={
   username : '',
   type : '',
