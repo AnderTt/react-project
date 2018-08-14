@@ -32,7 +32,6 @@ class Login extends Component{
     const {msg, redirectTo} = this.props.user;
     // 判断是否需要自动跳转
     if(redirectTo) {
-      console.log(1111)
       return <Redirect to={redirectTo}/>  // 在render()中实现自动跳转指定路由
     }
     return (

@@ -1,6 +1,8 @@
 import {combineReducers} from 'redux';
-import {AUTH_SUCCESS,ERROR_MSG} from './action-types'
-let initState={
+import {AUTH_SUCCESS,ERROR_MSG} from './action-types';
+
+import {getRedirectPath} from '../utils'
+const initState={
   username : '',
   type : '',
   msg : '',
@@ -11,16 +13,15 @@ function user(state=initState,action) {
   switch (action.type){
     case AUTH_SUCCESS :
       const user = action.data;
-      console.log(user,'---1');
-      return {...user,redirectTo: '/'} ;
+      return {...user,redirectTo: getRedirectPath(user.type,user.header)} ;
     case ERROR_MSG :
       const msg = action.data;
       return {...state,msg};
     default :
       return state
   }
-
 }
 export default combineReducers({
   user
 })
+console.log(user)
