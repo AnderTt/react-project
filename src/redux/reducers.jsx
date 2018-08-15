@@ -23,9 +23,9 @@ function user(state=initState,action) {
       return {...initState, msg: action.data};
     default :
       return state;
-      console.log(state,'00state')
   }
 }
 export default combineReducers({
   user
 })
+//state结构{user: user(),}

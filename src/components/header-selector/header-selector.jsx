@@ -11,7 +11,7 @@ class HeaderSelector extends Component{
     this.HeaderList = [];
     for (let i = 0; i < 20; i++) {
       const text = `头像${i+1}`;
-      const icon = require(`./images/${text}.png`);
+      const icon = require(`../../assets/images${text}.png`);
       this.HeaderList.push({icon,text});
     }
   }

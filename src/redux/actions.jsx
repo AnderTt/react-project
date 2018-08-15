@@ -13,7 +13,7 @@ const errorMsg = (msg)=>({ type : ERROR_MSG , data : msg});
 //接受用户
 const receiveUser =(user) =>({ type : RECEIVE_USER , data : user});
 //重置用户
-const resetUser =(msg) => ({ type : RESET_USER , data : msg});
+export const resetUser =(msg) => ({ type : RESET_USER , data : msg});
 
 //注册的异步
 export function register({username,password,rePassword,type}) {
