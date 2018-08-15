@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Route,Switch,Redirect} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {connect} from 'react-redux';
+import {NavBar} from 'antd-mobile'
 
 import DashenInfo from '../dashen-info/dashen-info';
 import LaobanInfo from '../laoban-info/laoban-info';
@@ -12,6 +13,10 @@ import Personal from '../personal/personal';
 import NotFound from '../../components/not-found/notFound';
 import {getRedirectPath} from '../../utils'
 import {getUser} from "../../redux/actions";
+import NavFooter from '../../components/nav-footer/navFooter'
+
+
+
 class Main extends Component{
 
   /*
@@ -86,13 +91,12 @@ class Main extends Component{
       // 根据当前用户的相关信息, 自动跳转对应的界面
       return <Redirect to={getRedirectPath(user.type, user.header)}/>
     }
-
-
     // 得到当前导航的信息对象
     // find()返回的是第一次回调函数返回true的对应的元素, 如果没有一匹配的, 返回undefined
     const currentNav = this.navList.find((nav, index) => nav.path===path);
     return (
       <div>
+        {currentNav ? <NavBar>{currentNav.title}</NavBar> : ''}
         <Switch>
           <Route path='/laobaninfo' component={LaobanInfo}/>
           <Route path='/dasheninfo' component={DashenInfo}/>
@@ -101,7 +105,10 @@ class Main extends Component{
           <Route path='/dashen' component={Dashen}/>
           <Route path='/message' component={Message}/>
           <Route path='/personal' component={Personal}/>
+
+          <Route component={NotFound}/>
         </Switch>
+        {currentNav ? <NavFooter navList={this.navList} /> : null}
       </div>
     )
   }
