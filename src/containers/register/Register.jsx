@@ -6,9 +6,6 @@ import {Redirect} from 'react-router-dom'
 import Logo from '../../components/logo/Logo';
 import {register} from '../../redux/actions'
 
-//引入接口调用函数
-import {reqRegister} from '../../api'
-
 const Item = List.Item;
 class Register extends Component{
   //初始化状态

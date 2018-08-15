@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {AUTH_SUCCESS,ERROR_MSG} from './action-types';
+import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './action-types';
 
 import {getRedirectPath} from '../utils'
 const initState={
@@ -17,11 +17,15 @@ function user(state=initState,action) {
     case ERROR_MSG :
       const msg = action.data;
       return {...state,msg};
+    case RECEIVE_USER :
+      return action.data;
+    case RESET_USER :
+      return {...initState, msg: action.data};
     default :
-      return state
+      return state;
+      console.log(state,'00state')
   }
 }
 export default combineReducers({
   user
 })
-console.log(user)

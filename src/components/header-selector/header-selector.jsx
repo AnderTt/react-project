@@ -25,7 +25,7 @@ class HeaderSelector extends Component{
 
   render(){
     const {icon} = this.state;
-    const head = icon ? <div>已选择头像:<img src={icon}/></div> : '请选择头像'
+    const head = icon ? <div>已选择头像:<img src={icon} alt='头像'/></div> : '请选择头像'
     return (
       <List renderHeader={() => head }>
         <Grid data={this.HeaderList} columnNum={5} onClick={this.selectHeader}/>

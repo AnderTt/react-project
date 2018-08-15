@@ -1,11 +1,10 @@
 import React,{Component} from 'react';
-import {NavBar,WhiteSpace,InputItem,WingBlank,List,Radio,Button} from 'antd-mobile';
+import {NavBar,WhiteSpace,InputItem,WingBlank,List,Button} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
 
 import Logo from '../../components/logo/Logo'
 import {login} from '../../redux/actions'
-const Item = List.Item;
 class Login extends Component{
   //初始化状态
   state = {
@@ -27,9 +26,7 @@ class Login extends Component{
     })
   };
   render(){
-    const {type} = this.state;
-
-    const {msg, redirectTo} = this.props.user;
+    const {redirectTo} = this.props.user;
     // 判断是否需要自动跳转
     if(redirectTo) {
       return <Redirect to={redirectTo}/>  // 在render()中实现自动跳转指定路由

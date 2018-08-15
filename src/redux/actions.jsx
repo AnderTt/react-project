@@ -3,9 +3,8 @@
 1. 同步action
 2. 异步action
  */
-import {reqRegister,reqLogin} from '../api';
+import {reqRegister,reqLogin,reUpdateUser,reqUser} from '../api';
 import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './action-types';
-import ajax from "../api/ajax";
 
 // 注册/登陆成功的同步action
 const authSuccess = (user)=>({ type : AUTH_SUCCESS , data : user});
@@ -85,7 +84,7 @@ export function login({username,password}) {
 //更新信息的异步
 export function updateUser(user) {
   return async dispatch=>{
-    const response = await ajax('/update',user,'POST');
+    const response = await reUpdateUser(user);
     const result = response.data;
     if(result.code===0){
       const user = result.data;
@@ -96,6 +95,18 @@ export function updateUser(user) {
       dispatch(resetUser(msg))
     }
    }
+}
+//获取用户信息
+export function getUser() {
+  return async dispatch=>{
+    const response = await reqUser();
+    const result = response.data;
+    if(result.code===0){
+      dispatch(receiveUser(result.data))
+    }else{
+      dispatch(resetUser(result.msg))
+    }
+  }
 }
 
 
