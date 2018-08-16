@@ -1,5 +1,11 @@
 import {combineReducers} from 'redux';
-import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './action-types';
+import {
+  AUTH_SUCCESS,
+  ERROR_MSG,
+  RECEIVE_USER,
+  RESET_USER,
+  RECEIVE_USER_LIST
+} from './action-types';
 
 import {getRedirectPath} from '../utils'
 const initState={
@@ -25,7 +31,19 @@ function user(state=initState,action) {
       return state;
   }
 }
+const initList = [];
+function userList(state=initList,action) {
+  switch (action.type){
+    case RECEIVE_USER_LIST :
+      return action.data;
+    default :
+      return state
+  }
+}
 export default combineReducers({
-  user
+  user,
+  userList
 })
-//state结构{user: user(),}
+
+// 1. 向外暴露是一个整合后的reducer函数: function (state, action)
+// 2. state的结构为: {user: user(), userList: userList()}

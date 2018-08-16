@@ -3,8 +3,21 @@
 1. 同步action
 2. 异步action
  */
-import {reqRegister,reqLogin,reUpdateUser,reqUser} from '../api';
-import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './action-types';
+import {
+  reqRegister,
+  reqLogin,
+  reUpdateUser,
+  reqUser,
+  reqUserList
+} from '../api';
+
+import {
+  AUTH_SUCCESS,
+  ERROR_MSG,
+  RECEIVE_USER,
+  RESET_USER,
+  RECEIVE_USER_LIST
+} from './action-types';
 
 // 注册/登陆成功的同步action
 const authSuccess = (user)=>({ type : AUTH_SUCCESS , data : user});
@@ -14,8 +27,11 @@ const errorMsg = (msg)=>({ type : ERROR_MSG , data : msg});
 const receiveUser =(user) =>({ type : RECEIVE_USER , data : user});
 //重置用户
 export const resetUser =(msg) => ({ type : RESET_USER , data : msg});
+//接受用户列表
+const receiveUserList = (userList) => ({ type : RECEIVE_USER_LIST , data:userList});
+//
 
-//注册的异步
+//注册的异步action
 export function register({username,password,rePassword,type}) {
   //执行异步，发送ajax请求，得到结果，分发同步action
  //前台表单验证-同步
@@ -58,7 +74,7 @@ export function register({username,password,rePassword,type}) {
     }
   }
 }
-//登录的异步
+//登录的异步action
 export function login({username,password}) {
   //执行异步，发送ajax请求，得到结果，分发同步action
   //前台表单验证-同步
@@ -81,7 +97,7 @@ export function login({username,password}) {
     }
   }
 }
-//更新信息的异步
+//更新信息的异步action
 export function updateUser(user) {
   return async dispatch=>{
     const response = await reUpdateUser(user);
@@ -96,7 +112,7 @@ export function updateUser(user) {
     }
    }
 }
-//获取用户信息
+//获取用户信息的异步action
 export function getUser() {
   return async dispatch=>{
     const response = await reqUser();
@@ -105,6 +121,19 @@ export function getUser() {
       dispatch(receiveUser(result.data))
     }else{
       dispatch(resetUser(result.msg))
+    }
+  }
+}
+//查看用户列表的异步action
+export function getUserList(type) {
+  return async dispatch=>{
+    const response = await reqUserList(type);
+    console.log(response);
+    const result = response.data;
+    if(result.code===0){
+        dispatch(receiveUserList(result.data));
+    }else {
+      dispatch(resetUser(result.msg));
     }
   }
 }

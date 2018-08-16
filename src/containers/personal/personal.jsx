@@ -55,6 +55,9 @@ class Personal extends React.Component {
   }
 }
 export default connect(
-  state=>({ user: state.user}),
+  state=>{
+      console.log(state);//这里可以打印得到state的结构
+      return { user: state.user}
+    },
   {resetUser}
 )(Personal);

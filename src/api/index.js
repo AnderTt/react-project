@@ -5,6 +5,8 @@ export const reqRegister=({username,password,type}) => ajax('/register',{usernam
 //登录接口函数
 export const reqLogin = (username,password) => ajax('/login',{username,password},'POST');
 //更新用户信息
-export const reUpdateUser =(user) => ajax('/update',user,'POST');
+export const reUpdateUser = (user) => ajax('/update',user,'POST');
 // 查看用户信息(根据cookie)
-export const reqUser =() => ajax('/user');
+export const reqUser = () => ajax('/user');
+//查看用户列表
+export const reqUserList = (type) => ajax('/userlist', {type});
