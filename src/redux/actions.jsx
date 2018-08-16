@@ -18,7 +18,10 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST
 } from './action-types';
+// 引入客户端io
+import io from 'socket.io-client'
 
+//同步action
 // 注册/登陆成功的同步action
 const authSuccess = (user)=>({ type : AUTH_SUCCESS , data : user});
 // 注册/登陆失败的同步action
@@ -29,8 +32,9 @@ const receiveUser =(user) =>({ type : RECEIVE_USER , data : user});
 export const resetUser =(msg) => ({ type : RESET_USER , data : msg});
 //接受用户列表
 const receiveUserList = (userList) => ({ type : RECEIVE_USER_LIST , data:userList});
-//
 
+
+//异步action
 //注册的异步action
 export function register({username,password,rePassword,type}) {
   //执行异步，发送ajax请求，得到结果，分发同步action
@@ -138,4 +142,17 @@ export function getUserList(type) {
   }
 }
 
-
+//发送聊天消息的异步action
+// 连接服务器, 得到代表连接的socket对象
+const socket = io('ws://localhost:4000');
+//绑定recieveMsg监听，监听服务器给浏览器发送的消息
+socket.on('recieveMsg',(chatMsg)=>{
+  console.log('浏览器端接收到服务器发送过消息:', chatMsg)
+})
+export function sendMsg({content,from,to}) {
+  return dispatch=>{
+    //向服务器发送消息
+    socket.emit('sendMsg',{content,from,to});
+    console.log('浏览器端向服务器发送消息:',{content,from,to});
+  }
+}

@@ -11,7 +11,7 @@ class DaShen extends Component{
   render(){
     const {userList} = this.props;
     return (
-     <UserList  userList={userList} />
+     <UserList  userList={userList}/>
     )
   }
 }

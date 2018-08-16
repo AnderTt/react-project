@@ -13,7 +13,8 @@ import Personal from '../personal/personal';
 import NotFound from '../../components/not-found/notFound';
 import {getRedirectPath} from '../../utils'
 import {getUser} from "../../redux/actions";
-import NavFooter from '../../components/nav-footer/navFooter'
+import NavFooter from '../../components/nav-footer/navFooter';
+import Chat from '../../containers/chat/chat'
 
 
 
@@ -112,7 +113,7 @@ class Main extends Component{
     const currentNav = this.navList.find((nav, index) => nav.path===path);
     return (
       <div>
-        {currentNav ? <NavBar>{currentNav.title}</NavBar> : ''}
+        {currentNav ? <NavBar className='fixed-top'>{currentNav.title}</NavBar> : ''}
         <Switch>
           <Route path='/laobaninfo' component={LaobanInfo}/>
           <Route path='/dasheninfo' component={DashenInfo}/>
@@ -121,7 +122,7 @@ class Main extends Component{
           <Route path='/dashen' component={Dashen}/>
           <Route path='/message' component={Message}/>
           <Route path='/personal' component={Personal}/>
-
+          <Route path='/chat/:userid' component={Chat}/>
           <Route component={NotFound}/>
         </Switch>
         {currentNav ? <NavFooter navList={this.navList} /> : null}

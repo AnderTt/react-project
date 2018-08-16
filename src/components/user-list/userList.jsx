@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import {WingBlank,Card,WhiteSpace} from 'antd-mobile';
+import  {withRouter} from 'react-router-dom'
 
 const Header = Card.Header;
 const Body = Card.Body;
@@ -11,8 +12,6 @@ class UserList extends Component{
   render(){
     // 只显示有头像的, 没有头像就会被过滤掉
     const userList = this.props.userList.filter(user => user.header);
-
-    console.log(userList);
     return (
       <WingBlank>
         {
@@ -20,7 +19,7 @@ class UserList extends Component{
 
               <div key={index}>
                   <WhiteSpace/>
-                  <Card>
+                  <Card onClick={()=>this.props.history.push(`/chat/${user._id}`)}>
                     <Header
                       thumb={require(`../../assets/images/${user.header}.png`)}
                       extra={user.username}
@@ -39,4 +38,4 @@ class UserList extends Component{
     )
   }
 }
-export default UserList;
+export default withRouter(UserList);
