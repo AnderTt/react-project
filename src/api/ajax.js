@@ -10,7 +10,6 @@ export default function ajax(url , data={} , type='GET') {
     Object.keys(data).map(key=>{
       const value = data[key];
       queryStr += `${key}=${value}&`;
-      //username=xxx&password=xxx&
     });
     if(queryStr){
       queryStr=queryStr.substring(0,queryStr.length-1);
