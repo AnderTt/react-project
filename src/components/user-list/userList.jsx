@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import {WingBlank,Card,WhiteSpace} from 'antd-mobile';
 import  {withRouter} from 'react-router-dom'
+import QueueAnim from 'rc-queue-anim';
+
 
 const Header = Card.Header;
 const Body = Card.Body;
@@ -13,7 +15,11 @@ class UserList extends Component{
     // 只显示有头像的, 没有头像就会被过滤掉
     const userList = this.props.userList.filter(user => user.header);
     return (
-      <WingBlank>
+
+
+    <WingBlank>
+      {/*alpha left right top bottom scale scaleBig scaleX scaleY*/}
+      <QueueAnim type='scale' delay={100}>
         {
           userList.map((user,index)=>(
 
@@ -34,6 +40,7 @@ class UserList extends Component{
                 </div>
           ))
         }
+      </QueueAnim>
       </WingBlank>
     )
   }

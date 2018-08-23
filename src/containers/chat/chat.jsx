@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux'
 import {NavBar, List, InputItem,Icon,Grid} from 'antd-mobile'
-import {sendMsg} from '../../redux/actions'
+import {sendMsg,readMsg} from '../../redux/actions'
+import QueueAnim from 'rc-queue-anim'
+
 
 const Item = List.Item;
 class Chat extends Component{
@@ -21,9 +23,16 @@ class Chat extends Component{
   // 初始化显示滚动到底部
   componentDidMount() {
     // 初始显示列表
-    window.scrollTo(0, document.body.scrollHeight)
+    window.scrollTo(0, document.body.scrollHeight);
   }
-
+  //组件即将消亡的时候（在退出组件的时候）
+  componentWillUnmount(){
+    //当前用户的userid
+    const from = this.props.user._id;
+    //接收方用户的userid
+    const to = this.props.match.params.userid;
+    this.props.readMsg(this.props.match.params.userid)
+  }
   // 更新显示时滚动到底部
   componentDidUpdate () {
     // 更新显示列表
@@ -79,7 +88,10 @@ class Chat extends Component{
           onLeftClick={() => this.props.history.goBack()}
         >{users[targetId].username}</NavBar>
         <List style={{marginBottom: 50,marginTop: 50}}>
-          {
+
+          {/*alpha left right top bottom scale scaleBig scaleX scaleY*/}
+          <QueueAnim type='scale' delay={100}>
+            {
             msgs.map(msg=>{
               if(msg.to===meId){
                 return (<Item key={msg._id} thumb={targetIcon}> {msg.content} </Item>)
@@ -88,7 +100,9 @@ class Chat extends Component{
               }
             })
           }
+          </QueueAnim>
         </List>
+
         <div className='am-tab-bar'>
           <InputItem onChange={(val)=>{this.setState({content:val})}}
             placeholder="请输入"
@@ -126,5 +140,5 @@ class Chat extends Component{
 }
 export default connect(
   state=>({user:state.user,chat:state.chat}),
-  {sendMsg}
+  {sendMsg,readMsg}
 )(Chat);

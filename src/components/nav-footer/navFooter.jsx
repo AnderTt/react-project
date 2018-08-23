@@ -4,7 +4,8 @@ import {TabBar} from 'antd-mobile';
 import {withRouter} from 'react-router-dom'
 class NavFooter extends Component{
   static propTypes = {
-    navList : PropTypes.array.isRequired
+    navList : PropTypes.array.isRequired,
+    unReadCount : PropTypes.number.isRequired
   };
   render(){
     //过滤掉navList中hide为true的元素
@@ -15,7 +16,10 @@ class NavFooter extends Component{
       <TabBar>
         {
           navList.map((nav,index)=>{
+            const {unReadCount}= this.props;
+            console.log(unReadCount,'000000');
             return <TabBar.Item key={index}
+                      badge={nav.path==='/message' ?unReadCount : 0}
                       title = {nav.title}
                       icon = {{uri: require(`./images/${nav.icon}.png`)}}
                       selectedIcon = {{uri: require(`./images/${nav.icon}-selected.png`)}}

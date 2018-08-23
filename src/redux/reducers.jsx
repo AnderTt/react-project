@@ -6,7 +6,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_CHAT_MSGS,
-  RECEIVE_CHAT_MSG
+  RECEIVE_CHAT_MSG,
+  MSG_READ
 } from './action-types';
 
 import {getRedirectPath} from '../utils'
@@ -51,19 +52,36 @@ const initChat = {
 function chat(state=initChat,action) {
   switch (action.type){
     case RECEIVE_CHAT_MSGS :
-      const {users,chatMsgs} = action.data;
+      var {users,chatMsgs,meId} = action.data;
       return {
         users,
         chatMsgs,
-        unReadCount : 0
+        //只有被人发给我的才加1
+        unReadCount : chatMsgs.reduce((preTotal, msg) => preTotal + (!msg.read&&msg.to===meId ? 1 : 0), 0),
       } ;
     case RECEIVE_CHAT_MSG :
-      const chatMsg = action.data;
+      var {chatMsg, meId} = action.data;
       return {
         users : state.users,
         chatMsgs : [...state.chatMsgs,chatMsg],
-        unReadCount : 0
-      }  ;
+        //只有被人发给我的才加1
+        unReadCount :state.unReadCount + (!chatMsg.read&&chatMsg.to===meId ? 1 : 0),
+      };
+    case MSG_READ:
+      const {count,targetId,meId} = action.data;
+      return {
+        users : state.users,
+        //将msg.from===targetId ， msg.to===meId ， msg.read为false的消息read改为true
+        chatMsgs :state.chatMsgs.map(msg => {
+          if(msg.from===targetId && msg.to===meId && !msg.read) {
+            //...运算可以将对象中的read属性覆盖
+            return {...msg, read: true}
+          } else {
+            return msg
+          }
+        }),
+        unReadCount : state.unReadCount - count
+      };
     default :
       return state;
   }

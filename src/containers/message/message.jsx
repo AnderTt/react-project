@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {List, Badge} from 'antd-mobile'
 
+
 const Item = List.Item;
 const Brief = Item.Brief;
 
@@ -68,7 +69,7 @@ class Message extends Component {
             const target = users[targetId];
             return (<Item
               key={index}
-              extra={<Badge text={3}/>}
+              extra={<Badge text={msg.unReadCount}/>}
               thumb={require(`../../assets/images/${target.header}.png`)}
               arrow='horizontal'
               onClick={()=>this.props.history.push(`/chat/${targetId}`)}

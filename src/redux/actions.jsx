@@ -12,6 +12,7 @@ import {
   reqUser,
   reqUserList,
   reqMsgList,
+  reqReadMsg
 } from '../api';
 
 import {
@@ -21,7 +22,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_CHAT_MSGS,
-  RECEIVE_CHAT_MSG
+  RECEIVE_CHAT_MSG,
+  MSG_READ
 } from './action-types';
 
 
@@ -37,10 +39,12 @@ export const resetUser =(msg) => ({ type : RESET_USER , data : msg});
 //接受用户列表
 const receiveUserList = (userList) => ({ type : RECEIVE_USER_LIST , data : userList});
 //获取当前用户的消息列表的同步action
-const receiveChatMsgs = ({users,chatMsgs}) =>({ type : RECEIVE_CHAT_MSGS, data : {users,chatMsgs}});
+const receiveChatMsgs = ({users,chatMsgs,meId}) =>({ type : RECEIVE_CHAT_MSGS, data : {users,chatMsgs,meId}});
 //获取一条新的消息的同步action，我们上线之后也有可能收到新的消息，所以不能只获取消息列表
 //还需要获取新的消息
-const receiveChatMsg = (chatMsg) =>({ type : RECEIVE_CHAT_MSG, data : chatMsg});
+const receiveChatMsg = (chatMsg,meId) =>({ type : RECEIVE_CHAT_MSG, data : {chatMsg,meId}});
+//获取未读消息的数量
+const msgRead = ({count, targetId, meId}) =>({ type : MSG_READ, data : {count, targetId, meId}});
 
 //异步action
 //注册的异步action
@@ -133,6 +137,7 @@ export function getUser() {
     const result = response.data;
     if(result.code===0){
       const user = result.data;
+      console.log(user);
       getChatMsgs(dispatch,user._id);
       dispatch(receiveUser(user))
     }else{
@@ -175,7 +180,7 @@ function initSocketIO(dispatch,meId){
       console.log(chatMsg,'000000000');
       //只有当是我发的或者是发给我的消息, 分发一个接收chatMsg的同步action
       if(chatMsg.from===io.meId || chatMsg.to===io.meId){
-        dispatch(receiveChatMsg(chatMsg))
+        dispatch(receiveChatMsg(chatMsg,io.meId))
       }
     });
   }
@@ -201,9 +206,25 @@ async function getChatMsgs(dispatch,meId) {
     const result = response.data;
     if(result.code===0){
       const {users,chatMsgs} = result.data;
-      dispatch(receiveChatMsgs({users,chatMsgs}))
+      dispatch(receiveChatMsgs({users,chatMsgs,meId}))
     }
 }
+
+/*
+更新未读消息为已读的异步action
+ */
+
+export function readMsg(targetId, meId) {
+  return async dispatch => {
+    const response = await reqReadMsg(targetId);
+    const result = response.data;
+    if(result.code===0) {
+      const count = result.data;
+      dispatch(msgRead({count, targetId, meId}))
+    }
+  }
+}
+
 /*
 async/await?
 1. 作用?
